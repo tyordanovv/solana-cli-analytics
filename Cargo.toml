@@ -13,3 +13,4 @@ tui = "0.19"
 backoff = "0.3"
 prometheus = "0.14"
 hyper = "0.14"
+clap = { version = "4.4", features = ["derive"] }

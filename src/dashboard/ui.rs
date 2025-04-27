@@ -5,7 +5,6 @@ use std::sync::Arc;
 use std::time::Duration;
 use crate::metrics::collector::MetricsCollector;
 
-/// Main terminal UI dashboard
 pub struct Dashboard<B: Backend> {
     terminal: Terminal<B>,
     metrics_collector: Arc<MetricsCollector>,
