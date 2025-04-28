@@ -1,8 +1,14 @@
-use std::error::Error;
 use clap::{Parser, ArgAction};
+use std::error::Error;
 use std::time::Duration;
 use std::collections::HashMap;
-
+use solana_cli_analytics::{
+    api::api_client::ApiClient,
+    websocket::ws_client::WebSocketClient,
+    metrics::collector::MetricsCollector,
+    dashboard::ui::{Dashboard, DashboardConfig},
+    dashboard::state::AppState,
+};
 #[derive(Parser, Debug)]
 #[command(
     name = "solana-cli-analytics",
@@ -11,19 +17,16 @@ use std::collections::HashMap;
     long_about = None
 )]
 struct CliArgs {
-    /// RPC API key
     #[arg(long, value_name = "RPC_API_KEY")]
     rpc_api_key: String,
 
-    /// JSON RPC endpoint URL
     #[arg(
         long,
-        default_value = "https://api.helius.xyz/v1",
+        default_value = "https://mainnet.helius-rpc.com/",
         value_name = "RPC_URL"
     )]
     rpc_url: String,
 
-    /// WebSocket endpoint URL
     #[arg(
         long,
         default_value = "wss://api.helius.xyz/v1/ws",
@@ -31,31 +34,24 @@ struct CliArgs {
     )]
     ws_url: String,
 
-    /// Dashboard refresh rate (seconds)
     #[arg(long, default_value = "1", value_name = "SECS")]
     refresh_rate: u64,
 
-    /// Time-series window size (seconds)
     #[arg(long, default_value = "60", value_name = "SECS")]
     window_size: u64,
 
-    /// Show cluster health panel
     #[arg(long, action = ArgAction::SetTrue)]
     show_cluster_health: bool,
 
-    /// Show fees panel
     #[arg(long, action = ArgAction::SetTrue)]
     show_fees: bool,
 
-    /// Show validator stats panel
     #[arg(long, action = ArgAction::SetTrue)]
     show_validator_stats: bool,
 
-    /// Show RPC health panel
     #[arg(long, action = ArgAction::SetTrue)]
     show_rpc_health: bool,
 
-    /// Show mempool panel
     #[arg(long, action = ArgAction::SetTrue)]
     show_mempool: bool,
 }
@@ -92,18 +88,28 @@ impl From<CliArgs> for Config {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    // 1. Parse command line arguments (API key, endpoints, etc.)
     let cli = CliArgs::parse();
     let cfg: Config = cli.into();
     println!("Config: {:?}", cfg);
-    // 2. Set up the HTTP client
-    
+
+    let helius_api_client: ApiClient = ApiClient::new(cfg.api_key.clone(), cfg.rpc_url.clone());
+
     // 3. Set up the WebSocket client
     
+
     // 4. Create the metrics collector
     
     // 5. Initialize the dashboard
-    
+    let dashboard_config: DashboardConfig = DashboardConfig {
+        refresh_rate: cfg.refresh_rate,
+        window_size: cfg.window_size,
+        show_cluster_health: cfg.panels["cluster_health"],
+        show_fees: cfg.panels["fees"],
+        show_validator_stats: cfg.panels["validator_stats"],
+        show_rpc_health: cfg.panels["rpc_health"],
+        show_mempool: cfg.panels["mempool"],
+    };
+
     // 6. Start the metrics collection in the background
     
     // 7. Run the dashboard UI main loop

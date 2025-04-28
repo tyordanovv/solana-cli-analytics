@@ -5,29 +5,33 @@ use std::sync::Arc;
 use std::time::Duration;
 use crate::metrics::collector::MetricsCollector;
 
+pub struct DashboardConfig {
+    pub refresh_rate: Duration,
+    pub window_size: Duration,
+    pub show_cluster_health: bool,
+    pub show_fees: bool,
+    pub show_validator_stats: bool,
+    pub show_rpc_health: bool,
+    pub show_mempool: bool,
+}
+
 pub struct Dashboard<B: Backend> {
     terminal: Terminal<B>,
     metrics_collector: Arc<MetricsCollector>,
-    refresh_rate: Duration,
-    window_size: Duration,
+    config: DashboardConfig,
 }
 
 impl<B: Backend> Dashboard<B> {
-    pub fn new(terminal: Terminal<B>, metrics_collector: Arc<MetricsCollector>) -> Self {
+    pub fn new(
+        terminal: Terminal<B>, 
+        metrics_collector: Arc<MetricsCollector>,
+        config: DashboardConfig,
+    ) -> Self {
         Self {
             terminal,
             metrics_collector,
-            refresh_rate: Duration::from_secs(1),
-            window_size: Duration::from_secs(60),
+            config,
         }
-    }
-    
-    pub fn set_refresh_rate(&mut self, rate: Duration) {
-        self.refresh_rate = rate;
-    }
-    
-    pub fn set_window_size(&mut self, size: Duration) {
-        self.window_size = size;
     }
     
     pub fn render(&mut self) -> Result<(), Box<dyn std::error::Error>> {

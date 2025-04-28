@@ -10,13 +10,13 @@ pub trait WebSocketEventHandler: Send + Sync {
     fn on_error(&self, error: String);
 }
 
-pub struct SolanaWebSocketClient {
+pub struct WebSocketClient {
     url: String,
     handlers: Vec<Arc<dyn WebSocketEventHandler>>,
     subscriptions: Arc<Mutex<Vec<String>>>,
 }
 
-impl SolanaWebSocketClient {
+impl WebSocketClient {
     pub fn new(url: String) -> Self {
         Self {
             url,

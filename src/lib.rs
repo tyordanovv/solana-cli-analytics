@@ -3,3 +3,4 @@ pub mod dashboard;
 pub mod metrics;
 pub mod models;
 pub mod websocket;
+pub mod error;

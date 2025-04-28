@@ -1,13 +1,13 @@
 use std::sync::{Arc, Mutex};
 use tokio::time::Duration;
-use crate::api::helius::HeliusClient;
-use crate::websocket::client::{SolanaWebSocketClient, WebSocketEventHandler};
+use crate::api::api_client::ApiClient;
+use crate::websocket::ws_client::{WebSocketClient, WebSocketEventHandler};
 use crate::metrics::aggregator::NumericTimeSeries;
 
 
 pub struct MetricsCollector {
-    http_client: Arc<HeliusClient>,
-    ws_client: Arc<SolanaWebSocketClient>,
+    http_client: Arc<ApiClient>,
+    ws_client: Arc<WebSocketClient>,
     tps_metrics: Arc<Mutex<NumericTimeSeries<>>>,
     latency_metrics: Arc<Mutex<NumericTimeSeries<>>>,
     fee_metrics: Arc<Mutex<NumericTimeSeries<>>>,
@@ -15,7 +15,7 @@ pub struct MetricsCollector {
 }
 
 impl MetricsCollector {
-    pub fn new(http_client: Arc<HeliusClient>, ws_client: Arc<SolanaWebSocketClient>) -> Self {
+    pub fn new(http_client: Arc<ApiClient>, ws_client: Arc<WebSocketClient>) -> Self {
         Self {
             http_client,
             ws_client,

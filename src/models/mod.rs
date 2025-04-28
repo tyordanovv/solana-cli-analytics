@@ -1,11 +1,13 @@
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PerformanceSample {
     pub slot: u64,
     pub num_transactions: u64,
     pub num_slots: u64,
     pub sample_period_secs: u64,
+    pub num_non_vote_transactions: u64,
 }
 
 #[derive(Debug, Deserialize)]
