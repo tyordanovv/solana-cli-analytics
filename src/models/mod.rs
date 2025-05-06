@@ -1,4 +1,4 @@
-use serde::Deserialize;
+use serde::{de, Deserialize};
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -48,4 +48,47 @@ pub struct FeeCalculator {
 pub struct PriorityFee {
     pub slot: u64,
     pub prioritization_fee: u64,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct EpochInfo {
+    pub absolute_slot: u64,
+    pub block_height: u64,
+    pub epoch: u64,
+    pub slot_index: u64,
+    pub slots_in_epoch: u64,
+    pub transaction_count: Option<u64>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TokenAccountBalance {
+    pub address: String,
+    pub amount: String,
+    pub decimals: u8,
+    pub ui_amount: Option<f64>,
+    pub ui_amount_string: String,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TokenSupplyValue {
+    pub amount: String,
+    pub decimals: u8,
+    pub ui_amount: Option<f64>,
+    pub ui_amount_string: String,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TokenSupply {
+    pub context: Context,
+    pub value: TokenSupplyValue,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Context {
+    pub slot: u64,
 }

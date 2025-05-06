@@ -4,8 +4,9 @@ use crate::api::api_client::ApiClient;
 use crate::websocket::ws_client::{WebSocketClient, WebSocketEventHandler};
 use crate::metrics::aggregator::NumericTimeSeries;
 
-
+// Responsible for collecting metrics from the node
 pub struct MetricsCollector {
+    interval: Duration,
     http_client: Arc<ApiClient>,
     ws_client: Arc<WebSocketClient>,
     tps_metrics: Arc<Mutex<NumericTimeSeries<>>>,
@@ -15,8 +16,9 @@ pub struct MetricsCollector {
 }
 
 impl MetricsCollector {
-    pub fn new(http_client: Arc<ApiClient>, ws_client: Arc<WebSocketClient>) -> Self {
+    pub fn new(interval: Duration, http_client: Arc<ApiClient>, ws_client: Arc<WebSocketClient>) -> Self {
         Self {
+            interval,
             http_client,
             ws_client,
             tps_metrics: Arc::new(Mutex::new(NumericTimeSeries::new(1000))),
@@ -26,7 +28,7 @@ impl MetricsCollector {
         }
     }
     
-    pub async fn start_collection(&self, poll_interval: Duration) {
+    pub async fn run(&self, poll_interval: Duration) {
         todo!()
     }
     

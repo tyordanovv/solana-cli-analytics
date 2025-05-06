@@ -11,8 +11,7 @@ pub struct DashboardConfig {
     pub show_cluster_health: bool,
     pub show_fees: bool,
     pub show_validator_stats: bool,
-    pub show_rpc_health: bool,
-    pub show_mempool: bool,
+    pub show_token_analytics: bool
 }
 
 pub struct Dashboard<B: Backend> {
@@ -34,27 +33,39 @@ impl<B: Backend> Dashboard<B> {
         }
     }
     
-    pub fn render(&mut self) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn run(&mut self) -> Result<(), Box<dyn std::error::Error>> {
         todo!()
     }
     
     fn render_cluster_health(&self, area: Rect) -> Result<(), Box<dyn std::error::Error>> {
+        // get_health
+        // get_epoch_info
+        // get_performance_samples
+        // get_stake_activation
+        // get_block_time
+        // ws slotUpdate
         todo!()
     }
     
     fn render_fees(&self, area: Rect) -> Result<(), Box<dyn std::error::Error>> {
+        // get_health
+        // get_fees
+        // get_priority_fee
         todo!()
     }
     
     fn render_validator_stats(&self, area: Rect) -> Result<(), Box<dyn std::error::Error>> {
+        // get_health
+        // get_vote_accounts
+        // get_epoch_info
         todo!()
     }
-    
-    fn render_rpc_health(&self, area: Rect) -> Result<(), Box<dyn std::error::Error>> {
-        todo!()
-    }
-    
-    fn render_mempool(&self, area: Rect) -> Result<(), Box<dyn std::error::Error>> {
+
+    fn render_token_analytics(&self, area: Rect) -> Result<(), Box<dyn std::error::Error>> {
+        // get_health
+        // get_token_largest_accounts
+        // get_token_supply
+        // get_account_info
         todo!()
     }
 }

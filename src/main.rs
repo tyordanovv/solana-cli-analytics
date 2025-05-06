@@ -7,7 +7,6 @@ use solana_cli_analytics::{
     websocket::ws_client::WebSocketClient,
     metrics::collector::MetricsCollector,
     dashboard::ui::{Dashboard, DashboardConfig},
-    dashboard::state::AppState,
 };
 #[derive(Parser, Debug)]
 #[command(
@@ -50,10 +49,7 @@ struct CliArgs {
     show_validator_stats: bool,
 
     #[arg(long, action = ArgAction::SetTrue)]
-    show_rpc_health: bool,
-
-    #[arg(long, action = ArgAction::SetTrue)]
-    show_mempool: bool,
+    show_token_analytics: bool,
 }
 
 #[derive(Debug)]
@@ -72,8 +68,7 @@ impl From<CliArgs> for Config {
         panels.insert("cluster_health", args.show_cluster_health);
         panels.insert("fees", args.show_fees);
         panels.insert("validator_stats", args.show_validator_stats);
-        panels.insert("rpc_health", args.show_rpc_health);
-        panels.insert("mempool", args.show_mempool);
+        panels.insert("token_analytics", args.show_token_analytics);
 
         Config {
             api_key: args.rpc_api_key,
@@ -106,8 +101,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         show_cluster_health: cfg.panels["cluster_health"],
         show_fees: cfg.panels["fees"],
         show_validator_stats: cfg.panels["validator_stats"],
-        show_rpc_health: cfg.panels["rpc_health"],
-        show_mempool: cfg.panels["mempool"],
+        show_token_analytics: cfg.panels["token_analytics"],
     };
 
     // 6. Start the metrics collection in the background

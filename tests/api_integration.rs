@@ -24,3 +24,24 @@ async fn test_get_performance_samples() {
     let samples = client.get_performance_samples().await;
     assert!(samples.is_ok(), "Failed to get performance samples: {:?}", samples);
 }
+
+#[tokio::test]
+async fn test_get_health() {
+    dotenv().ok();
+
+    let api_key = match env::var("HELIUS_API_KEY") {
+        Ok(key) => key,
+        Err(_) => {
+            println!("Skipping API integration test: HELIUS_API_KEY not set");
+            return;
+        }
+    };
+    
+    let client = ApiClient::new(
+        api_key,
+        "https://mainnet.helius-rpc.com/".to_string()
+    );
+    
+    let health = client.get_health().await;
+    assert!(health.is_ok(), "Failed to get health: {:?}", health);
+}

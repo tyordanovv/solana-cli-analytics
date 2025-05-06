@@ -26,7 +26,8 @@ impl ApiClient {
             api_key,
         }
     }
-    
+
+    // ----------------------------- Cluster Health Panel -----------------------------
     pub async fn get_performance_samples(&self) -> Result<Vec<PerformanceSample>, ApiError> {
         let params = Some(vec![serde_json::json!(10)]);
         
@@ -41,13 +42,46 @@ impl ApiClient {
         todo!()
     }
     
+    /// Check the health of the Solana node
+    pub async fn get_health(&self) -> Result<(), Box<dyn Error>> {
+        let response: String = self.make_request("getHealth", None).await?;
+        if response == "ok" {
+            Ok(())
+        } else {
+            Err(Box::new(ApiError::ResponseError("Node is not healthy".to_string())))
+        }
+        
+    }
+
+    /// Fetch the current epoch information (slot, epoch progress, etc.)
+    pub async fn get_epoch_info(&self) -> Result<EpochInfo, Box<dyn Error>> {
+        todo!()
+    }
+
+    // ----------------------------- Token Analytics Panel -----------------------------
+
+    /// Fetch the largest accounts holding a specific token
+    pub async fn get_token_largest_accounts(&self, mint: &str) -> Result<Vec<TokenAccountBalance>, Box<dyn Error>> {
+        todo!()
+    }
+
+    /// Fetch total supply of a specific token
+    pub async fn get_token_supply(&self, mint: &str) -> Result<TokenSupply, Box<dyn Error>> {
+        todo!()
+    }
+
+    // ----------------------------- Fees Panel -----------------------------
+
+    /// Fetch current fee structure (lamports per signature, rent exemptions, etc.)
     pub async fn get_fees(&self) -> Result<Fees, Box<dyn Error>> {
         todo!()
     }
-    
+
+    /// Fetch current priority fee information (for faster transaction confirmation)
     pub async fn get_priority_fee(&self) -> Result<PriorityFee, Box<dyn Error>> {
         todo!()
     }
+    
 
     fn build_request_payload(&self, method: &str, params: Option<Vec<serde_json::Value>>) -> serde_json::Value {
         serde_json::json!({
