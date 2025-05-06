@@ -30,8 +30,8 @@ impl ApiClient {
     // ----------------------------- Cluster Health Panel -----------------------------
     pub async fn get_performance_samples(&self) -> Result<Vec<PerformanceSample>, ApiError> {
         let params = Some(vec![serde_json::json!(10)]);
-        
-        self.make_request("getRecentPerformanceSamples", params).await
+        let performance_samples = self.make_request("getRecentPerformanceSamples", params).await?;
+        Ok(performance_samples)
     }
     
     pub async fn get_block_time(&self, slot: u64) -> Result<BlockTime, Box<dyn Error>> {
@@ -55,7 +55,8 @@ impl ApiClient {
 
     /// Fetch the current epoch information (slot, epoch progress, etc.)
     pub async fn get_epoch_info(&self) -> Result<EpochInfo, Box<dyn Error>> {
-        todo!()
+        let epoch_info: EpochInfo = self.make_request("getEpochInfo", None).await?;
+        Ok(epoch_info)
     }
 
     // ----------------------------- Token Analytics Panel -----------------------------
